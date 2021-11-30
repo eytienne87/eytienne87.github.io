@@ -49,6 +49,10 @@
       font-weight: 200;
       border-left: 1px solid #D1E2FF;
     }
+
+    .red {
+      color: red;
+    }
   </style>
    <!--
    The following is a common layout you would see in an email client.
@@ -96,6 +100,45 @@
   </div>
 
 <script>
+  // Select all the checkboxes
+  const checkboxes = Array.from(document.querySelectorAll('input'));
+
+  const crossingOutInputs = (event) => {
+    let previousDiv = event.target.parentNode.previousElementSibling
+    let index = 0;
+
+    while (previousDiv !== null) {
+      previousDiv = previousDiv.previousElementSibling;
+      index += 1;
+    }
+
+    if (event.target.checked) {
+      order.push(index);
+    } else {
+      order.splice(order.indexOf(index), 1);
+    }
+
+    if (event.shiftKey === true) {
+      const shiftClicked = checkboxes.indexOf(event.target)
+      const previouslyClicked = order[order.length - 2]
+      if (!previouslyClicked) {
+        // 1. no other checkbox is clicked
+        checkboxes.slice(shiftClicked).forEach(checkbox => checkbox.setAttribute('checked', 'true'))
+      } else if (previouslyClicked > shiftClicked) {
+        // 2. a checkbox below is already clicked
+        checkboxes.slice(shiftClicked, previouslyClicked).forEach(checkbox => checkbox.setAttribute('checked', 'true'))
+      } else {
+        // 3. a checkbox above is already clicked
+        checkboxes.slice(previouslyClicked, shiftClicked).forEach(checkbox => checkbox.setAttribute('checked', 'true'))
+      }
+    }
+  };
+
+  const order = []
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('click', crossingOutInputs);
+  });
+
 </script>
 </body>
 </html>
