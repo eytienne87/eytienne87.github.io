@@ -15,7 +15,32 @@
     </ul>
   </form>
 <script>
-const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  // Create a callnack function to insert li elements into our html
+  // Create a function to handle the regex for the autocomplete suggestions
+
+  const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
+  const inputForm = document.querySelector('input')
+
+  // Obtain city, state and population from data and store it in an object
+
+  const myFunction = () => {
+    const reg = new RegExp(inputForm.value)
+    fetch(endpoint)
+    .then(response => response.json())
+    .then(data => {
+      data.forEach(cityObject => {
+        if (cityObject.city.match(reg)) {
+          return console.log(cityObject.city);
+        }
+      });
+    });
+  }
+
+
+  // Add eventlistener to key presses in the input of the form
+
+  inputForm.addEventListener('keyup', myFunction);
+
 
 </script>
 </body>
