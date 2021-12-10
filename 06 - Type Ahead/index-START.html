@@ -15,32 +15,38 @@
     </ul>
   </form>
 <script>
-  // Create a callnack function to insert li elements into our html
-  // Create a function to handle the regex for the autocomplete suggestions
 
   const endpoint = 'https://gist.githubusercontent.com/Miserlou/c5cd8364bf9b2420bb29/raw/2bf258763cdddd704f8ffd3ea9a3e81d25e2c6f6/cities.json';
   const inputForm = document.querySelector('input')
+  const suggestions = document.querySelector('.suggestions')
+  const cities = []
 
-  // Obtain city, state and population from data and store it in an object
-
-  const myFunction = () => {
-    const reg = new RegExp(inputForm.value)
-    fetch(endpoint)
+  fetch(endpoint)
     .then(response => response.json())
     .then(data => {
-      data.forEach(cityObject => {
-        if (cityObject.city.match(reg)) {
-          return console.log(cityObject.city);
-        }
-      });
+      cities.push(...data)
+  });
+
+  const findMatches = (wordToMatch, cities) => {
+    return cities.filter(area => {
+      const regex = new RegExp(wordToMatch, 'gi');
+      return area.city.match(regex) || area.state.match(regex);
     });
   }
 
+  const displayMatches = () => {
+    const results = findMatches(event.currentTarget.value, cities)
+    const html = results.map(area => {
+      return `<li>
+        <p>${area.city}, ${area.state}</p>
+        <p>${area.population}</p>
+      </li>
+      `
+    }).join(" ")
+    return suggestions.innerHTML = html;
+  }
 
-  // Add eventlistener to key presses in the input of the form
-
-  inputForm.addEventListener('keyup', myFunction);
-
+  inputForm.addEventListener('keyup', displayMatches);
 
 </script>
 </body>
