@@ -34,12 +34,19 @@
     });
   }
 
+  const numberWithCommas = x => {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   const displayMatches = () => {
     const results = findMatches(event.currentTarget.value, cities)
     const html = results.map(area => {
+      const regex = new RegExp(event.currentTarget.value, 'gi');
+      const cityName = area.city.replace(regex, `<span class="hl">${event.currentTarget.value}</span>`);
+      const stateName = area.state.replace(regex, `<span class="hl">${event.currentTarget.value}</span>`);
       return `<li>
-        <p>${area.city}, ${area.state}</p>
-        <p>${area.population}</p>
+        <span>${cityName}, ${stateName}</span>
+        <span class="population">${numberWithCommas(area.population)}</span>
       </li>
       `
     }).join(" ")
