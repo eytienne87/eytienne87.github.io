@@ -70,6 +70,22 @@
       align-items: center;
     }
 
+    .panel > *:first-child {
+      transform: translateY(-100%);
+    }
+
+    .panel.open-active > *:first-child {
+      transform: translateY(0);
+    }
+
+    .panel.panel.open-active > *:last-child {
+      transform: translateY(100%);
+    }
+
+    .panel > *:last-child {
+      transform: translateY(0);
+    }
+
     .panel p {
       text-transform: uppercase;
       font-family: 'Amatic SC', cursive;
@@ -82,6 +98,7 @@
     }
 
     .panel.open {
+      flex: 5;
       font-size: 40px;
     }
 
