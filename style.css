@@ -10,22 +10,33 @@ body {
 
 img {
     max-width: 100%;
+    width: 100%;
+    height: 70%;
+    object-fit: cover;
 }
 
 h1 {
   font-size: 3rem;
-  margin-top: 0;
+  margin: 0;
   font-family: 'Playfair Display', serif;
 }
 
-.container  {
-  width: 90%;
-  margin: 0 auto;
-  /* border: 4px solid red; */
+.header-container {
+  flex-direction: column;
+  align-items: center;
+  padding-top: 2em;
+}
+
+.container {
   display: flex;
-  gap: 1em;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.exercise-card-grid {
+  justify-content: space-between;
   flex-wrap: wrap;
-  justify-content: center;
+  gap: 1em;
 }
 
 .exercise-card {
@@ -42,4 +53,16 @@ h1 {
 
 .exercise-card:hover {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+@media screen and (max-width: 700px) {
+  .exercise-card {
+    width: 47.7%;
+  }
+}
+
+@media screen and (max-width: 565px) {
+  .exercise-card {
+    width: 100%;
+  }
 }
