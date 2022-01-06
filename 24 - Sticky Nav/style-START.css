@@ -50,6 +50,11 @@ nav {
   z-index: 1;
 }
 
+.fixed-nav {
+  position: fixed;
+  border-bottom: 5px solid rgba(240, 240, 240, 0.9);
+}
+
 nav ul {
   margin: 0;
   padding:0;

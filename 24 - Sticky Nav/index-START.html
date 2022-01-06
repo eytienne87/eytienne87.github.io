@@ -55,6 +55,22 @@
   </div>
 
 <script>
+  const nav = document.querySelector('#main');
+  const logo = document.querySelector('.logo');
+  const navTop = nav.offsetTop;
+
+  function handleScroll() {
+    if (window.scrollY >= navTop) {
+      nav.classList.add('fixed-nav');
+      logo.style.maxWidth = '100%';
+    }
+    else {
+      nav.classList.remove('fixed-nav');
+      logo.style.maxWidth = '0';
+    }
+  }
+
+  window.addEventListener('scroll', handleScroll)
 
 </script>
 
