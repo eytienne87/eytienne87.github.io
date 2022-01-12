@@ -56,21 +56,20 @@
 
 <script>
   const nav = document.querySelector('#main');
-  const logo = document.querySelector('.logo');
   const navTop = nav.offsetTop;
 
-  function handleScroll() {
+  function stickNav() {
     if (window.scrollY >= navTop) {
+      document.body.style.paddingTop = nav.offsetHeight + 'px';
       nav.classList.add('fixed-nav');
-      logo.style.maxWidth = '100%';
     }
     else {
+      document.body.style.paddingTop = 0;
       nav.classList.remove('fixed-nav');
-      logo.style.maxWidth = '0';
     }
   }
 
-  window.addEventListener('scroll', handleScroll)
+  window.addEventListener('scroll', stickNav)
 
 </script>
 

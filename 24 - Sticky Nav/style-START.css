@@ -45,7 +45,7 @@ nav {
   background: black;
   top: 0;
   width: 100%;
-  transition: all 0.5s;
+  transition: all 1s;
   position: relative;
   z-index: 1;
 }
@@ -53,6 +53,10 @@ nav {
 .fixed-nav {
   position: fixed;
   border-bottom: 5px solid rgba(240, 240, 240, 0.9);
+}
+
+.fixed-nav li.logo {
+  max-width: 500px;
 }
 
 nav ul {
