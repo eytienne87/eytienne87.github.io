@@ -11,8 +11,21 @@
   </div>
 
 <script>
-  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const output = document.querySelector('.words');
 
+  function runSpeechRecognition() {
+    const recognition = new webkitSpeechRecognition()
+    recognition.onresult = function() {
+      const transcript = event.results[0][0].transcript
+      return output.innerHTML = `<p>${transcript}</p>`
+    }
+    recognition.onspeechend = function() {
+      recognition.stop();
+    }
+    recognition.start();
+  }
+
+  window.addEventListener('load', runSpeechRecognition)
 
 </script>
 
