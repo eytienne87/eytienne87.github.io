@@ -53,6 +53,7 @@ h1 {
 
 .exercise-card:hover {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  transform: scale(1.05);
 }
 
 @media screen and (max-width: 700px) {
