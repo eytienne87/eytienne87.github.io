@@ -5,7 +5,7 @@ const playbackRateInput = document.querySelector('input[name=playbackRate]');
 const minusSecondsButton = document.querySelector("button[data-skip='-10']");
 const addSecondsButton = document.querySelector("button[data-skip='25']");
 const progressBarFilled = document.querySelector('.progress__filled');
-const progressBar = document.querySelector('.progress')
+const progressBar = document.querySelector('.progress');
 
 const progressHandler = (event) => {
   const progressBarLength = progressBar.offsetWidth;
@@ -26,11 +26,13 @@ const progressBarHandler = () => {
   const duration = video.duration;
   const currentTime = video.currentTime;
   const percentageTimeElapsed = (Math.round(((currentTime / duration) * 100) * 10) / 10);
+
+  // Update the yellow progress bar whenever 'currentTime' is updated
   progressBarFilled.style.flexBasis = `${percentageTimeElapsed}%`
 };
 
 const addButtonHandler = () => {
-  video.currentTime += 25
+  video.currentTime += 25;
 }
 
 const minusButtonHandler = () => {
@@ -84,3 +86,8 @@ addSecondsButton.addEventListener('click', addButtonHandler);
 video.addEventListener('timeupdate', progressBarHandler);
 
 progressBar.addEventListener('click', progressHandler)
+
+let mousedown = false;
+progressBar.addEventListener('mousemove', (event) => mousedown && progressHandler(event));
+progressBar.addEventListener('mousedown', () => mousedown = true);
+progressBar.addEventListener('mouseup', () => mousedown = false);
