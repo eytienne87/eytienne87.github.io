@@ -38,28 +38,54 @@
 
   let voices = [];
   const synth = window.speechSynthesis;
+  const textTyped = document.querySelector('textarea');
 
 
   function populateVoiceList() {
     voices = synth.getVoices();
 
     // Filter through the voice array to obtain only the ones in english
-    let anglophoneVoices = voices.filter(voice => voice.lang.match(/en/g));
+    let englishVoices = voices.filter(voice => voice.lang.match(/en/g));
 
     // Insert name and language into an option element for each voice
     // And insert the option elements into the DOM
-    anglophoneVoices.forEach(voice => {
+    englishVoices.forEach(voice => {
       const option = document.createElement('option');
       option.setAttribute('value', `${voice.name}`);
       option.innerText = `${voice.name} (${voice.lang})`;
       voicesDropdown.appendChild(option);
     });
+
+    return englishVoices;
   }
 
   populateVoiceList();
   if (speechSynthesis.onvoiceschanged !== undefined) {
       speechSynthesis.onvoiceschanged = populateVoiceList;
   }
+
+  function handleTextToSpeech() {
+    // Store the array of voice objects in a variable (only english)
+    const englishVoices = populateVoiceList();
+
+    // Store the voice selected in a variable
+    const selected = voicesDropdown.selectedOptions[0].getAttribute('value');
+
+    // Set the voice uttered by the speech utterance instance equal to the voice selected
+    for (let i = 0; i < englishVoices.length; i++) {
+      if (englishVoices[i].name === selected) {
+        msg.voice = englishVoices[i];
+      }
+    }
+
+    // Set the text uttered by the speech utterance instance equal to what is inputed in the textarea
+    msg.text = `${textTyped.value}`;
+
+    // Activate the speech utterance instance
+    synth.speak(msg);
+  }
+
+  speakButton.addEventListener('click', handleTextToSpeech);
 </script>
 
 </body>
