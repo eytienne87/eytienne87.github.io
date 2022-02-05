@@ -31,11 +31,35 @@
 
 <script>
   const msg = new SpeechSynthesisUtterance();
-  let voices = [];
   const voicesDropdown = document.querySelector('[name="voice"]');
   const options = document.querySelectorAll('[type="range"], [name="text"]');
   const speakButton = document.querySelector('#speak');
   const stopButton = document.querySelector('#stop');
+
+  let voices = [];
+  const synth = window.speechSynthesis;
+
+
+  function populateVoiceList() {
+    voices = synth.getVoices();
+
+    // Filter through the voice array to obtain only the ones in english
+    let anglophoneVoices = voices.filter(voice => voice.lang.match(/en/g));
+
+    // Insert name and language into an option element for each voice
+    // And insert the option elements into the DOM
+    anglophoneVoices.forEach(voice => {
+      const option = document.createElement('option');
+      option.setAttribute('value', `${voice.name}`);
+      option.innerText = `${voice.name} (${voice.lang})`;
+      voicesDropdown.appendChild(option);
+    });
+  }
+
+  populateVoiceList();
+  if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = populateVoiceList;
+  }
 </script>
 
 </body>
