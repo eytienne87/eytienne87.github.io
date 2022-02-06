@@ -32,20 +32,28 @@
 <script>
   const msg = new SpeechSynthesisUtterance();
   const voicesDropdown = document.querySelector('[name="voice"]');
-  const options = document.querySelectorAll('[type="range"], [name="text"]');
+  const rateInput = document.querySelector('input[name=rate]');
+  const pitchInput = document.querySelector('input[name=pitch]');
   const speakButton = document.querySelector('#speak');
   const stopButton = document.querySelector('#stop');
+  const selectAVoiceOption = document.querySelector('option')
+  voicesDropdown.removeChild(selectAVoiceOption);
 
   let voices = [];
   const synth = window.speechSynthesis;
   const textTyped = document.querySelector('textarea');
 
 
-  function populateVoiceList() {
+  function filterVoicesArray() {
     voices = synth.getVoices();
 
     // Filter through the voice array to obtain only the ones in english
     let englishVoices = voices.filter(voice => voice.lang.match(/en/g));
+    return englishVoices;
+  }
+
+  function populateVoiceList() {
+    let englishVoices = filterVoicesArray()
 
     // Insert name and language into an option element for each voice
     // And insert the option elements into the DOM
@@ -55,18 +63,16 @@
       option.innerText = `${voice.name} (${voice.lang})`;
       voicesDropdown.appendChild(option);
     });
-
-    return englishVoices;
   }
 
   populateVoiceList();
   if (speechSynthesis.onvoiceschanged !== undefined) {
-      speechSynthesis.onvoiceschanged = populateVoiceList;
+    speechSynthesis.onvoiceschanged = populateVoiceList;
   }
 
-  function handleTextToSpeech() {
+  function speakBtnHandler() {
     // Store the array of voice objects in a variable (only english)
-    const englishVoices = populateVoiceList();
+    const englishVoices = filterVoicesArray();
 
     // Store the voice selected in a variable
     const selected = voicesDropdown.selectedOptions[0].getAttribute('value');
@@ -85,7 +91,54 @@
     synth.speak(msg);
   }
 
-  speakButton.addEventListener('click', handleTextToSpeech);
+  function rateSliderHandler() {
+    synth.cancel();
+    // Store the value of the slider input in a variable
+    const sliderInput = rateInput.value;
+
+    // Convert it into a percentage
+    const percentage = sliderInput / 3;
+    const min = 0.5;
+    const max = 2;
+
+    // Convert the percentage into our desired units for the speech utterance instance rate property
+    const speechRate = percentage * (max - min) + min;
+
+    // Modify the rate of the speech utterance accordingly
+    msg.rate = speechRate;
+
+    // Activate the speech utterance instance
+    synth.speak(msg);
+  }
+
+  function pitchSliderHandler() {
+    synth.cancel();
+    // Store the value of the slider input in a variable
+    const sliderInput = pitchInput.value;
+
+    // Convert it into a percentage
+    const percentage = sliderInput / 2;
+    const min = 0.5;
+    const max = 2;
+
+    // Convert the percentage into our desired units for the speech utterance instance rate property
+    const pitchRate = percentage * (max - min) + min;
+
+    // Modify the rate of the speech utterance accordingly
+    msg.pitch = pitchRate;
+
+    // Activate the speech utterance instance
+    synth.speak(msg);
+  }
+
+  function stopBtnHandler() {
+    synth.cancel();
+  }
+
+  speakButton.addEventListener('click', speakBtnHandler);
+  rateInput.addEventListener('change', rateSliderHandler);
+  pitchInput.addEventListener('change', pitchSliderHandler);
+  stopButton.addEventListener('click', stopBtnHandler)
 </script>
 
 </body>
